@@ -1,5 +1,7 @@
 package br.com.futurodev.jmt.exerciciosS08.controllers;
 
+import br.com.futurodev.jmt.exerciciosS08.dtos.ProjectRequestDto;
+import br.com.futurodev.jmt.exerciciosS08.dtos.ProjectResponseDto;
 import br.com.futurodev.jmt.exerciciosS08.entities.Project;
 import br.com.futurodev.jmt.exerciciosS08.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,26 +18,24 @@ public class ProjectController {
     private ProjectService service;
 
     @GetMapping
-    public List<Project> get(String search){
+    public List<ProjectResponseDto> get(String search){
         return service.findAll(search);
     }
 
     @GetMapping("{id}")
-    public Project getById(@PathVariable Long id){
+    public ProjectResponseDto getById(@PathVariable Long id){
         return service.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Project post(@RequestBody Project project){
-        project.setId(null);
-        return service.save(project);
+    public ProjectResponseDto post(@RequestBody ProjectRequestDto dto){
+        return service.create(dto);
     }
 
     @PutMapping("{id}")
-    public Project put(@PathVariable Long id, @RequestBody Project project){
-        project.setId(id);
-        return service.save(project);
+    public ProjectResponseDto put(@PathVariable Long id, @RequestBody ProjectRequestDto dto){
+        return service.update(id, dto);
     }
 
     @DeleteMapping("{id}")

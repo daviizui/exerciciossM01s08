@@ -1,5 +1,7 @@
 package br.com.futurodev.jmt.exerciciosS08.controllers;
 
+import br.com.futurodev.jmt.exerciciosS08.dtos.OrganizationRequestDto;
+import br.com.futurodev.jmt.exerciciosS08.dtos.OrganizationResponseDto;
 import br.com.futurodev.jmt.exerciciosS08.entities.Organization;
 import br.com.futurodev.jmt.exerciciosS08.services.OrganizationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,26 +18,24 @@ public class OrganizationController {
     private OrganizationService service;
 
     @GetMapping
-    public List<Organization> get(String search){
+    public List<OrganizationResponseDto> get(String search){
         return service.findAll(search);
     }
 
     @GetMapping("{id}")
-    public Organization getById(@PathVariable Long id){
+    public OrganizationResponseDto getById(@PathVariable Long id){
         return service.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Organization post(@RequestBody Organization organization){
-        organization.setId(null);
-        return service.save(organization);
+    public OrganizationResponseDto post(@RequestBody OrganizationRequestDto dto){
+        return service.save(dto);
     }
 
     @PutMapping("{id}")
-    public Organization put(@PathVariable Long id, @RequestBody Organization organization){
-        organization.setId(id);
-        return service.save(organization);
+    public OrganizationResponseDto put(@PathVariable Long id, @RequestBody OrganizationRequestDto dto){
+        return service.update(id, dto);
     }
 
     @DeleteMapping("{id}")
